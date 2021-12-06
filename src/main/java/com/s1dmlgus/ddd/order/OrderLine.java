@@ -15,11 +15,13 @@ public class OrderLine {
         this.amounts = calculateAmounts();
     }
 
+    // 구매 가격 합 생성
     private int calculateAmounts(){
         return price * quantity;
     }
 
-    private int getAmounts(){
+    // 구매 가격 합 반환
+    public int getAmounts(){
         return amounts;
     }
 
