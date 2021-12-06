@@ -32,8 +32,7 @@ public class Order {
         this.shippingInfo = shippingInfo;
     }
 
-
-
+    
 
     // 주문 항복 유효성 검사
     private void verifyAtLeastOneOrMoreOrderLines(List<OrderLine> orderLines) {
@@ -51,30 +50,31 @@ public class Order {
     // 배송지 정보 변경
     public void changeShippingInfo(ShippingInfo newShippingInfo) {
 
-        if (!isShippingChangeable()) {
-            throw new IllegalStateException("can't change shipping in" + state);
-        }
-
-        this.shippingInfo = newShippingInfo;
+        verifyNotYetShipped();
+        setShippingInfo(newShippingInfo);
     }
 
-    // 배송지 정보 변경조건
-    private boolean isShippingChangeable(){
-        return state == OrderState.PAYMENT_WAITING ||
-                state == OrderState.PREPARING;
 
+    // 배송지 변경 유효성 검사
+    private void verifyNotYetShipped() {
+        if(state != OrderState.PAYMENT_WAITING && state != OrderState.PREPARING)
+            throw new IllegalStateException("이미 출고 됬습니다.");
     }
 
-    // 출고 상태 변경
-    public void changeShipped(){
-
-        this.state = OrderState.SHIPPED;
-    }
 
     // 주문 취소
     public void cancel(){
+        verifyNotYetShipped();
+        this.state = OrderState.CANCELED;
 
     }
+
+
+    // 출고 상태 변경
+    public void changeShipped(){
+        this.state = OrderState.SHIPPED;
+    }
+
 
     // 결제 완료
     public void completePayment(){
