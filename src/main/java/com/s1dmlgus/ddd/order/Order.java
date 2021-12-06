@@ -4,6 +4,7 @@ import java.util.List;
 
 public class Order {
 
+    private Orderer orderer;
     private OrderState state;                               // 주문 상태
     private ShippingInfo shippingInfo;                      // 배송 정보
     private List<OrderLine> orderLines;                     // 주문 항목
@@ -11,9 +12,17 @@ public class Order {
 
     
     // 주문 생성자
-    public Order(List<OrderLine> orderLines, ShippingInfo shippingInfo) {
+    public Order(Orderer orderer, List<OrderLine> orderLines, ShippingInfo shippingInfo) {
+        setOrderer(orderer);
         setOrderLines(orderLines);
         setShippingInfo(shippingInfo);
+    }
+
+    private void setOrderer(Orderer orderer) {
+
+        if(orderer == null)
+            throw new IllegalArgumentException(" 주문자가 없습니다.");
+        this.orderer = orderer;
     }
 
     // 주문 항목 주입
