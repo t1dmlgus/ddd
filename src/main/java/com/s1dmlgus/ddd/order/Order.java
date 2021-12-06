@@ -7,7 +7,7 @@ public class Order {
     private OrderState state;                               // 주문 상태
     private ShippingInfo shippingInfo;                      // 배송 정보
     private List<OrderLine> orderLines;                     // 주문 항목
-    private int totalAmounts;                               // 주문 총 가격
+    private Money totalAmounts;                               // 주문 총 가격
 
     
     // 주문 생성자
@@ -32,7 +32,7 @@ public class Order {
         this.shippingInfo = shippingInfo;
     }
 
-    
+
 
     // 주문 항복 유효성 검사
     private void verifyAtLeastOneOrMoreOrderLines(List<OrderLine> orderLines) {
@@ -43,15 +43,8 @@ public class Order {
 
     // 주문 총 가격
     private void calculateTotalAmounts(){
-        totalAmounts = orderLines.stream().mapToInt(OrderLine::getAmounts).sum();
+        totalAmounts = new Money(orderLines.stream().mapToInt(x->x.getAmounts().getValue()).sum());
 
-    }
-
-    // 배송지 정보 변경
-    public void changeShippingInfo(ShippingInfo newShippingInfo) {
-
-        verifyNotYetShipped();
-        setShippingInfo(newShippingInfo);
     }
 
 
@@ -61,6 +54,13 @@ public class Order {
             throw new IllegalStateException("이미 출고 됬습니다.");
     }
 
+
+    // 배송지 정보 변경
+    public void changeShippingInfo(ShippingInfo newShippingInfo) {
+
+        verifyNotYetShipped();
+        setShippingInfo(newShippingInfo);
+    }
 
     // 주문 취소
     public void cancel(){
