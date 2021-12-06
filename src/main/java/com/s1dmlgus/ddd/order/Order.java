@@ -11,8 +11,9 @@ public class Order {
 
     
     // 주문 생성자
-    public Order(List<OrderLine> orderLines) {
-        this.orderLines = orderLines;
+    public Order(List<OrderLine> orderLines, ShippingInfo shippingInfo) {
+        setOrderLines(orderLines);
+        setShippingInfo(shippingInfo);
     }
 
     // 주문 항목 주입
@@ -21,6 +22,18 @@ public class Order {
         this.orderLines = orderLines;
         calculateTotalAmounts();
     }
+
+    // 배송지 정보 주입
+    private void setShippingInfo(ShippingInfo shippingInfo) {
+
+        if (shippingInfo == null) {
+            throw new IllegalArgumentException("배송정보가 없습니다.");
+        }
+        this.shippingInfo = shippingInfo;
+    }
+
+
+
 
     // 주문 항복 유효성 검사
     private void verifyAtLeastOneOrMoreOrderLines(List<OrderLine> orderLines) {
@@ -31,7 +44,7 @@ public class Order {
 
     // 주문 총 가격
     private void calculateTotalAmounts(){
-        this.totalAmounts = orderLines.stream().mapToInt(OrderLine::getAmounts).sum();
+        totalAmounts = orderLines.stream().mapToInt(OrderLine::getAmounts).sum();
 
     }
 
