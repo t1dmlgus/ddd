@@ -5,6 +5,8 @@ public class Order {
     private OrderState state;
     private ShippingInfo shippingInfo;
 
+
+    // 배송지 정보변경
     public void changeShippingInfo(ShippingInfo newShippingInfo) {
 
         if (!isShippingChangeable()) {
@@ -19,8 +21,19 @@ public class Order {
 
     }
 
+    // 출고 상태 변경
     public void changeShipped(){
-        // 로직 검사
+
         this.state = OrderState.SHIPPED;
+    }
+
+    // 주문 취소
+    public void cancel(){
+
+    }
+
+    // 결제 완료
+    public void completePayment(){
+
     }
 }
