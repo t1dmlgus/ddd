@@ -1,5 +1,6 @@
 package com.s1dmlgus.ddd.catalog.domain.product;
 
+import com.s1dmlgus.ddd.catalog.domain.category.CategoryId;
 import com.s1dmlgus.ddd.common.jpa.MoneyConverter;
 import com.s1dmlgus.ddd.common.model.Money;
 import lombok.AllArgsConstructor;
@@ -9,6 +10,7 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "product")
@@ -17,6 +19,10 @@ public class Product {
 
     @EmbeddedId
     private ProductId id;
+
+    @ElementCollection
+    @CollectionTable(name = "product_category", joinColumns = @JoinColumn(name = "product_id"))
+    private Set<CategoryId> categoryIds;
 
     private String name;
 
@@ -31,7 +37,6 @@ public class Product {
     private List<Image> images = new ArrayList<>();
 
     protected Product(){}
-
     public Product(ProductId id, String name, Money price, String detail, List<Image> images) {
         this.id = id;
         this.name = name;
