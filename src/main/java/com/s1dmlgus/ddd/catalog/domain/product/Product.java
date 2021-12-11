@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import javax.persistence.*;
+import javax.print.attribute.standard.MediaSize;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -35,6 +36,13 @@ public class Product {
     @JoinColumn(name = "product_id")
     @OrderColumn(name = "list_idx")
     private List<Image> images = new ArrayList<>();
+
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "product_option", joinColumns = @JoinColumn(name = "product_id"))
+    @OrderColumn(name = "list_idx")
+    private List<Option> options = new ArrayList<>();
+
 
     protected Product(){}
     public Product(ProductId id, String name, Money price, String detail, List<Image> images) {
