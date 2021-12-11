@@ -1,14 +1,38 @@
-package com.s1dmlgus.ddd.order;
+package com.s1dmlgus.ddd.order.domain;
 
+import com.s1dmlgus.ddd.common.model.Money;
+import lombok.Getter;
+
+import javax.persistence.*;
 import java.util.List;
 
+
+@Entity
+@Table(name="purchase_order")
+@Access(AccessType.FIELD)
+@Getter
 public class Order {
 
-    private Orderer orderer;
-    private OrderState state;                               // 주문 상태
-    private ShippingInfo shippingInfo;                      // 배송 정보
-    private List<OrderLine> orderLines;                     // 주문 항목
-    private Money totalAmounts;                               // 주문 총 가격
+    @EmbeddedId
+    private OrderNo number;
+
+    @Embedded
+    private Orderer orderer;                        // 주문자
+
+    @Column(name = "state")
+    @Enumerated(EnumType.STRING)
+    private OrderState state;                       // 주문 상태
+
+    @Embedded
+    private ShippingInfo shippingInfo;              // 배송 정보
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "order_line", joinColumns = @JoinColumn(name = "order_number"))
+    @OrderColumn(name = "line_idx")
+    private List<OrderLine> orderLines;             // 주문 항목
+
+    @Column(name = "total_amounts")
+    private Money totalAmounts;                     // 주문 총 가격
 
     
     // 주문 생성자
@@ -56,6 +80,12 @@ public class Order {
 
     }
 
+    // 배송지 정보 변경
+    public void changeShippingInfo(ShippingInfo newShippingInfo) {
+
+        verifyNotYetShipped();
+        setShippingInfo(newShippingInfo);
+    }
 
     // 배송지 변경 유효성 검사
     private void verifyNotYetShipped() {
@@ -64,12 +94,6 @@ public class Order {
     }
 
 
-    // 배송지 정보 변경
-    public void changeShippingInfo(ShippingInfo newShippingInfo) {
-
-        verifyNotYetShipped();
-        setShippingInfo(newShippingInfo);
-    }
 
     // 주문 취소
     public void cancel(){

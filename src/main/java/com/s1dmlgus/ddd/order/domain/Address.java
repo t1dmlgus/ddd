@@ -1,4 +1,4 @@
-package com.s1dmlgus.ddd.order;
+package com.s1dmlgus.ddd.order.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,9 +7,9 @@ import lombok.Getter;
 @Getter
 public class Address {
 
-    private String addr01;
-    private String addr02;
     private String zipcode;
+    private String address01;
+    private String address02;
 
 
 }

@@ -1,4 +1,4 @@
-package com.s1dmlgus.ddd.order;
+package com.s1dmlgus.ddd.order.domain;
 
 public enum OrderState {
 
