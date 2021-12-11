@@ -7,7 +7,6 @@ import javax.persistence.*;
 
 @SecondaryTable(name = "article_content", pkJoinColumns = @PrimaryKeyJoinColumn(name = "id"))
 @Table(name = "article")
-@AllArgsConstructor
 @Getter
 @Entity
 public class Article {
@@ -29,5 +28,9 @@ public class Article {
 
     protected Article() { }
 
-
+    public Article(String title, ArticleContent content) {
+        this.title = title;
+        this.content = content;
+    }
 }
+
