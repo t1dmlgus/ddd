@@ -1,6 +1,4 @@
-package com.s1dmlgus.ddd.order;
-
-import java.util.stream.IntStream;
+package com.s1dmlgus.ddd.common.model;
 
 public class Money {
 
